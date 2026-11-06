@@ -1,0 +1,40 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+
+title Diagrama de Componentes - Sistema de Gestión Académica
+
+package "Sistema de Gestión Académica (SGA)" {
+
+    component "Interfaz Web" as UI
+
+    package "Módulos del Sistema" {
+        component "Autenticación y permisos" as Auth
+        component "Gestión académica" as Academico
+        component "Matrículas" as Matriculas
+        component "Calificaciones" as Notas
+        component "Reportes" as Reportes
+        component "Auditoría" as Auditoria
+    }
+
+    database "Base de datos" as BD
+}
+
+UI --> Auth
+UI --> Academico
+UI --> Matriculas
+UI --> Notas
+UI --> Reportes
+
+Auth --> BD
+Academico --> BD
+Matriculas --> BD
+Notas --> BD
+Reportes --> BD
+
+Auth --> Auditoria
+Academico --> Auditoria
+Matriculas --> Auditoria
+Notas --> Auditoria
+
+@enduml 

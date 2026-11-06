@@ -1,0 +1,55 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Administrador as Admin
+actor "Coordinador Académico" as Coord
+actor Docente as Doc
+actor Estudiante as Est
+
+rectangle "Sistema de Gestión Académica (SGA)" {
+
+usecase "Iniciar y cerrar sesión" as UC1
+usecase "Gestionar usuarios y permisos" as UC2
+usecase "Gestionar estudiantes" as UC3
+usecase "Gestionar docentes" as UC4
+usecase "Gestionar programas y asignaturas" as UC5
+usecase "Gestionar periodos y grupos" as UC6
+usecase "Realizar matrículas" as UC7
+usecase "Registrar y actualizar calificaciones" as UC8
+usecase "Consultar resultados académicos" as UC9
+usecase "Generar reportes" as UC10
+usecase "Buscar y filtrar información" as UC11
+usecase "Consultar registros de auditoría" as UC12
+
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC12
+Admin --> UC3
+Admin --> UC4
+Admin --> UC10  
+
+Coord --> UC1
+Coord --> UC3
+Coord --> UC4
+Coord --> UC5
+Coord --> UC6
+Coord --> UC7
+Coord --> UC8
+Coord --> UC9
+Coord --> UC10
+Coord --> UC11
+Coord --> UC12
+
+Doc --> UC1
+Doc --> UC8
+Doc --> UC11
+
+Est --> UC1
+Est --> UC7
+Est --> UC9
+Est --> UC11
+
+@enduml

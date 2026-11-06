@@ -1,0 +1,126 @@
+@startuml ModeloConceptualDatos
+
+title Modelo Conceptual de Datos - Sistema de Gestión Académica
+
+hide methods
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+entity "Rol" as Rol {
+    * id_rol : INT
+    --
+    nombre_rol : VARCHAR
+    descripcion : VARCHAR
+}
+
+entity "Usuario" as Usuario {
+    * id_usuario : INT
+    --
+    nombre : VARCHAR
+    correo : VARCHAR
+    contrasena_hash : VARCHAR
+    estado : BOOLEAN
+    id_rol : INT
+}
+
+entity "Estudiante" as Estudiante {
+    * id_estudiante : INT
+    --
+    codigo : VARCHAR
+    documento : VARCHAR
+    programa : VARCHAR
+    id_usuario : INT
+    id_programa : INT
+}
+
+entity "Docente" as Docente {
+    * id_docente : INT
+    --
+    documento : VARCHAR
+    especialidad : VARCHAR
+    id_usuario : INT
+}
+
+entity "Programa" as Programa {
+    * id_programa : INT
+    --
+    nombre : VARCHAR
+    descripcion : VARCHAR
+}
+
+entity "Asignatura" as Asignatura {
+    * id_asignatura : INT
+    --
+    codigo : VARCHAR
+    nombre : VARCHAR
+    creditos : INT
+    semestre : INT
+    id_programa : INT
+}
+
+entity "Periodo Academico" as Periodo {
+    * id_periodo : INT
+    --
+    nombre : VARCHAR
+    fecha_inicio : DATE
+    fecha_fin : DATE
+    estado : VARCHAR
+}
+
+entity "Grupo" as Grupo {
+    * id_grupo : INT
+    --
+    capacidad : INT
+    horario : VARCHAR
+    aula : VARCHAR
+    id_asignatura : INT
+    id_docente : INT
+    id_periodo : INT
+}
+
+entity "Matricula" as Matricula {
+    * id_matricula : INT
+    --
+    fecha_matricula : DATE
+    estado : VARCHAR
+    id_estudiante : INT
+    id_grupo : INT
+}
+
+entity "Calificacion" as Calificacion {
+    * id_calificacion : INT
+    --
+    nota : DECIMAL
+    fecha_registro : DATE
+    observacion : VARCHAR
+    id_matricula : INT
+}
+
+entity "Auditoria" as Auditoria {
+    * id_auditoria : INT
+    --
+    accion : VARCHAR
+    fecha : DATETIME
+    detalle : VARCHAR
+    id_usuario : INT
+}
+
+Rol ||--o{ Usuario : asigna
+Usuario ||--o| Estudiante : perfil
+Usuario ||--o| Docente : perfil
+
+Programa ||--o{ Estudiante : incluye
+Programa ||--o{ Asignatura : contiene
+
+Asignatura ||--o{ Grupo : se ofrece en
+Docente ||--o{ Grupo : orienta
+Periodo ||--o{ Grupo : programa
+
+Estudiante ||--o{ Matricula : realiza
+Grupo ||--o{ Matricula : recibe
+
+Matricula ||--o{ Calificacion : registra
+
+Usuario ||--o{ Auditoria : genera
+
+@enduml

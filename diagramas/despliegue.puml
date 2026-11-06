@@ -1,0 +1,29 @@
+@startuml DespliegueSGA
+
+title Diagrama de Despliegue - Sistema de Gestión Académica
+
+node "Dispositivo del usuario" {
+    artifact "Navegador web" as Navegador
+}
+
+node "Servidor de aplicaciones" {
+    artifact "Interfaz web" as Interfaz
+    artifact "API REST / Backend" as Backend
+    artifact "Módulos del SGA" as Modulos
+}
+
+node "Servidor de base de datos" {
+    database "Base de datos SGA" as BD
+}
+
+node "Servicio de copias de seguridad" {
+    artifact "Respaldo de información" as Backup
+}
+
+Navegador --> Interfaz : HTTPS
+Interfaz --> Backend : HTTPS / REST
+Backend --> Modulos
+Modulos --> BD : SQL
+BD --> Backup : Copias periódicas
+
+@enduml

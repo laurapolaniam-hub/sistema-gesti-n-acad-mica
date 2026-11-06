@@ -1,0 +1,47 @@
+@startuml SecuenciaMatricula
+
+title Diagrama de Secuencia - Matrícula de un Estudiante
+
+actor Estudiante
+participant "Interfaz Web" as Interfaz
+participant "API REST / Backend" as Backend
+participant "Servicio de Autenticación" as Auth
+participant "Módulo de Matrículas" as Matriculas
+database "Base de Datos SGA" as BD
+
+Estudiante -> Interfaz : Iniciar sesión
+Interfaz -> Backend : Enviar credenciales
+Backend -> Auth : Validar usuario y contraseña
+Auth -> BD : Consultar usuario
+BD --> Auth : Datos del usuario
+
+alt Credenciales válidas
+    Auth --> Backend : Acceso autorizado
+    Backend --> Interfaz : Sesión iniciada
+    Interfaz --> Estudiante : Mostrar opciones
+
+    Estudiante -> Interfaz : Seleccionar periodo y grupo
+    Interfaz -> Backend : Solicitar matrícula
+    Backend -> Matriculas : Validar solicitud
+    Matriculas -> BD : Consultar cupos y matrícula existente
+    BD --> Matriculas : Resultado de validación
+
+    alt Hay cupo y no existe matrícula duplicada
+        Matriculas -> BD : Registrar matrícula
+        BD --> Matriculas : Matrícula guardada
+        Matriculas --> Backend : Matrícula confirmada
+        Backend --> Interfaz : Confirmación
+        Interfaz --> Estudiante : Mostrar matrícula exitosa
+    else No cumple las condiciones
+        Matriculas --> Backend : Rechazar matrícula
+        Backend --> Interfaz : Informar motivo
+        Interfaz --> Estudiante : Mostrar mensaje de error
+    end
+
+else Credenciales inválidas
+    Auth --> Backend : Acceso denegado
+    Backend --> Interfaz : Error de autenticación
+    Interfaz --> Estudiante : Mostrar mensaje de error
+end
+
+@enduml
